@@ -86,99 +86,49 @@
       var taxRate = 0.01;
 
 
-      //addition of phone
+      //addition of phone 
       const addPhone = document.getElementById('addPhone');
       addPhone.addEventListener('click', function () {
-
-         //Adding phone to chart
-         const numOfPhone = updateItemNumber('currentPhone', -1 * numOfItem);
-         document.getElementById('currentPhone').value = numOfPhone;
-
-         //price update area 
-         updatePrice('phonePrice', numOfPhone, priceOfPhone);
-
-         //subtotal counting area
-         const newSubtotal = updateSubtotal('currentSubtotal', -1 * priceOfPhone);
-         document.getElementById('currentSubtotal').innerText = newSubtotal;
-
-         //tax counting area
-         const updatedTax = taxCount(newSubtotal);
-         document.getElementById('taxAmount').innerText = updatedTax;
-
-         //total counting area
-         totalCount(newSubtotal, updatedTax);
-      })
-
+         const sign = -1;
+         operation('currentPhone', 'phonePrice', priceOfPhone, sign);
+      });
 
       //deletion of phone
       const deletePhone = document.getElementById('deletePhone');
       deletePhone.addEventListener('click', function () {
-
-         //Deleting phone to chart
-         const numOfPhone = updateItemNumber('currentPhone', numOfItem);
-         if (numOfPhone < 0) {
-            numOfPhone = 0;
-         }
-         document.getElementById('currentPhone').value = numOfPhone;
-
-         //price update area 
-         updatePrice('phonePrice', numOfPhone, priceOfPhone);
-
-         //subtotal counting area
-         const newSubtotal = updateSubtotal('currentSubtotal', priceOfPhone);
-         document.getElementById('currentSubtotal').innerText = newSubtotal;
-
-         //tax counting area
-         const updatedTax = taxCount(newSubtotal);
-         document.getElementById('taxAmount').innerText = updatedTax;
-
-         //total counting area
-         totalCount(newSubtotal, updatedTax);
-      })
+         const sign = 1;
+         operation('currentPhone', 'phonePrice', priceOfPhone, sign);
+      });
 
 
-      ////addition of phone case
+      //addition of phone case
       const addCase = document.getElementById('addCase');
       addCase.addEventListener('click', function () {
-
-         //Adding phone Case to chart
-         const numOfCase = updateItemNumber('currentCase', -1 * numOfItem);
-         document.getElementById('currentCase').value = numOfCase;
-
-         //price update area 
-         updatePrice('casePrice', numOfCase, priceOfCase);
-
-         //subtotal counting area
-         const newSubtotal = updateSubtotal('currentSubtotal', -1 * priceOfCase);
-         document.getElementById('currentSubtotal').innerText = newSubtotal;
-
-         //tax counting area
-         const updatedTax = taxCount(newSubtotal);
-         document.getElementById('taxAmount').innerText = updatedTax;
-
-         //total counting area
-         totalCount(newSubtotal, updatedTax);
-      })
-
+         const sign = -1;
+         operation('currentCase', 'casePrice', priceOfCase, sign);
+      });
 
       //deletion of phone case
       const deleteCase = document.getElementById('deleteCase');
       deleteCase.addEventListener('click', function () {
+         const sign = 1;
+         operation('currentCase', 'casePrice', priceOfCase, sign);
+      });
 
-         //Deleting phone to chart
-         const numOfCase = updateItemNumber('currentCase', numOfItem);
-         if (numOfCase < 0) {
-
-
-            numOfCase = 0;
+      //function for response on click
+      function operation(currentItems, itemPrice, priceOfItem, sign) {
+         //Adding phone to chart
+         const itemNumbers = updateItemNumber(currentItems, sign * numOfItem);
+         if (itemNumbers < 0) {
+            itemNumbers = 0;
          }
-         document.getElementById('currentCase').value = numOfCase;
+         document.getElementById(currentItems).value = itemNumbers;
 
          //price update area 
-         updatePrice('casePrice', numOfCase, priceOfCase);
+         updatePrice(itemPrice, itemNumbers, priceOfItem);
 
          //subtotal counting area
-         const newSubtotal = updateSubtotal('currentSubtotal', priceOfCase);
+         const newSubtotal = updateSubtotal('currentSubtotal', sign * priceOfItem);
          document.getElementById('currentSubtotal').innerText = newSubtotal;
 
          //tax counting area
@@ -187,7 +137,7 @@
 
          //total counting area
          totalCount(newSubtotal, updatedTax);
-      })
+      }
 
       //Function for updating items in chart
       function updateItemNumber(id, numOfItem) {
