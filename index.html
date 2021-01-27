@@ -25,11 +25,11 @@
 
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button id="deletePhone" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="currentPhone" type="text" class="form-control text-center" value="1">
+                           <button id="addPhone" class="btn btn-default"><i class="fas fa-plus"></i></button>
                         </div>
-                        <h5>$1219</h5>
+                        <h5>$<span id="phonePrice">1219</span></h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -43,12 +43,12 @@
                      </div>
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button id="deleteCase" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="currentCase" type="text" class="form-control text-center" value="1">
+                           <button id="addCase" class="btn btn-default"><i class="fas fa-plus"></i></button>
 
                         </div>
-                        <h5>$59</h5>
+                        <h5>$<span id="casePrice">59</span></h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -64,9 +64,9 @@
                      </div>
 
                      <div class="col-md-4 status">
-                        <h5>$1,278</h5>
-                        <h5>$0</h5>
-                        <h5>$1,278</h5>
+                        <h5>$ <span id="currentSubtotal">1278</span></h5>
+                        <h5>$<span id="taxAmount">13</span></h5>
+                        <h5>$<span id="totalAmount">1291</span></h5>
                      </div>
                   </div>
                </div>
@@ -77,6 +77,153 @@
          </div>
       </div>
    </section>
+
+   <script>
+      //Global variable 
+      var numOfItem = 1;
+      var priceOfPhone = 1219;
+      var priceOfCase = 59;
+      var taxRate = 0.01;
+
+
+      //addition of phone
+      const addPhone = document.getElementById('addPhone');
+      addPhone.addEventListener('click', function () {
+
+         //Adding phone to chart
+         const numOfPhone = updateItemNumber('currentPhone', -1 * numOfItem);
+         document.getElementById('currentPhone').value = numOfPhone;
+
+         //price update area 
+         updatePrice('phonePrice', numOfPhone, priceOfPhone);
+
+         //subtotal counting area
+         const newSubtotal = updateSubtotal('currentSubtotal', -1 * priceOfPhone);
+         document.getElementById('currentSubtotal').innerText = newSubtotal;
+
+         //tax counting area
+         const updatedTax = taxCount(newSubtotal);
+         document.getElementById('taxAmount').innerText = updatedTax;
+
+         //total counting area
+         totalCount(newSubtotal, updatedTax);
+      })
+
+
+      //deletion of phone
+      const deletePhone = document.getElementById('deletePhone');
+      deletePhone.addEventListener('click', function () {
+
+         //Deleting phone to chart
+         const numOfPhone = updateItemNumber('currentPhone', numOfItem);
+         if (numOfPhone < 0) {
+            numOfPhone = 0;
+         }
+         document.getElementById('currentPhone').value = numOfPhone;
+
+         //price update area 
+         updatePrice('phonePrice', numOfPhone, priceOfPhone);
+
+         //subtotal counting area
+         const newSubtotal = updateSubtotal('currentSubtotal', priceOfPhone);
+         document.getElementById('currentSubtotal').innerText = newSubtotal;
+
+         //tax counting area
+         const updatedTax = taxCount(newSubtotal);
+         document.getElementById('taxAmount').innerText = updatedTax;
+
+         //total counting area
+         totalCount(newSubtotal, updatedTax);
+      })
+
+
+      ////addition of phone case
+      const addCase = document.getElementById('addCase');
+      addCase.addEventListener('click', function () {
+
+         //Adding phone Case to chart
+         const numOfCase = updateItemNumber('currentCase', -1 * numOfItem);
+         document.getElementById('currentCase').value = numOfCase;
+
+         //price update area 
+         updatePrice('casePrice', numOfCase, priceOfCase);
+
+         //subtotal counting area
+         const newSubtotal = updateSubtotal('currentSubtotal', -1 * priceOfCase);
+         document.getElementById('currentSubtotal').innerText = newSubtotal;
+
+         //tax counting area
+         const updatedTax = taxCount(newSubtotal);
+         document.getElementById('taxAmount').innerText = updatedTax;
+
+         //total counting area
+         totalCount(newSubtotal, updatedTax);
+      })
+
+
+      //deletion of phone case
+      const deleteCase = document.getElementById('deleteCase');
+      deleteCase.addEventListener('click', function () {
+
+         //Deleting phone to chart
+         const numOfCase = updateItemNumber('currentCase', numOfItem);
+         if (numOfCase < 0) {
+
+
+            numOfCase = 0;
+         }
+         document.getElementById('currentCase').value = numOfCase;
+
+         //price update area 
+         updatePrice('casePrice', numOfCase, priceOfCase);
+
+         //subtotal counting area
+         const newSubtotal = updateSubtotal('currentSubtotal', priceOfCase);
+         document.getElementById('currentSubtotal').innerText = newSubtotal;
+
+         //tax counting area
+         const updatedTax = taxCount(newSubtotal);
+         document.getElementById('taxAmount').innerText = updatedTax;
+
+         //total counting area
+         totalCount(newSubtotal, updatedTax);
+      })
+
+      //Function for updating items in chart
+      function updateItemNumber(id, numOfItem) {
+         const currentItems = document.getElementById(id).value;
+         const currentNumOfItems = parseFloat(currentItems);
+         const updatedItems = currentNumOfItems - numOfItem;
+         return updatedItems;
+      }
+
+      //Function for counting price 
+      function updatePrice(id, newNumberOfItem, pricePerItem) {
+         const newPrice = newNumberOfItem * pricePerItem;
+         document.getElementById(id).innerText = newPrice;
+      }
+
+      //Function for counting subtotal
+      function updateSubtotal(id, pricePerItem) {
+         const currentSubtotal = document.getElementById(id).innerText;
+         const subtotalValue = parseFloat(currentSubtotal);
+         const newSubtotal = subtotalValue - pricePerItem;
+         return newSubtotal;
+      }
+
+      //Function for counting tax
+      function taxCount(newSubtotal) {
+         const updatedTax = newSubtotal * taxRate;
+         return Math.round(updatedTax);
+      }
+
+      //Function for counting total
+      function totalCount(newSubtotal, updatedTax) {
+         const total = newSubtotal + updatedTax;
+         document.getElementById('totalAmount').innerText = total;
+      }
+   </script>
+
 </body>
 
 </html>
